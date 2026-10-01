@@ -1,0 +1,45 @@
+study:
+  climatology_start: "1983-01-01"
+  climatology_end: "2012-12-31"
+  model_train_end: "2016-12-31"
+  independent_test_start: "2017-01-01"
+  independent_test_end: "2025-12-31"
+  historical_backtest_year: 2025
+  minimum_event_days: 5
+  target_definition: "sst_celsius - clim_mean"
+  threshold_definition: "threshold - clim_mean"
+  cumulative_intensity_definition: "sum(sst_celsius - clim_mean) over event days"
+  no_event_policy:
+    event_frequency: 0
+    annual_mhw_days: 0
+    event_level_annual_means: null
+
+stacking:
+  base_fraction: 0.75
+  random_seed: 42
+  rf:
+    n_estimators: 200
+    max_depth: 8
+    min_samples_split: 5
+  gam:
+    n_splines: 10
+    number_of_smooth_terms: 4
+  lstm:
+    lookback_days: 30
+    units: 32
+    dropout: 0.20
+    epochs: 50
+    batch_size: 32
+    early_stopping_patience: 5
+
+environmental_forecasts:
+  sarimax_order: [1, 1, 1]
+  annual_fourier_harmonics: 3
+  annual_period_days: 365.0
+
+conditional_projection:
+  forecast_origin: "2025-12-31"
+  initial_state_generation_start: "2026-01-01"
+  reported_window_start: "2026-02-26"
+  reported_window_end: "2026-12-31"
+
